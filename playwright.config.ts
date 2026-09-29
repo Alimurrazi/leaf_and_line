@@ -12,8 +12,10 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    // The e2e build includes the test-only fixture catalog (a second book, drafts, portrait pages).
+    command: `node scripts/make-e2e-fixtures.mjs && npm run build && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
+    env: { LEAF_E2E_FIXTURES: "1" },
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,
   },

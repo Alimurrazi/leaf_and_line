@@ -31,3 +31,6 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Test-only fixture images (scripts/make-e2e-fixtures.mjs)
+/public/novels/_e2e/
