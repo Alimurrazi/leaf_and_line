@@ -269,6 +269,6 @@ These changes are not a rigid dependency chain: guided panels need no database; 
 - Whether the catalog will remain entirely free or eventually include paid books.
 - Whether a CMS or custom database/dashboard best fits the eventual publishing workflow.
 - Whether user accounts and a separate .NET API will ever be necessary.
-- Which zoom library works best with real comic pages.
+- ~~Which zoom library works best with real comic pages.~~ **Decided:** react-zoom-pan-pinch.
 
 **Current working default:** Leaf & Line on Next.js + TypeScript, typed content files, 14 optimized images in `public/` (PNG masters kept out of the repository), local reading progress, Vercel as a proposed host, and no separate backend for MVP. Revisit decisions when requirements change; update this document alongside the project handover.

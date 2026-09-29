@@ -3,7 +3,7 @@
 *Graphic Novel Platform*
 
 **Date:** 24 September 2026 (revised 29 September 2026: name, review findings, prototype deviations)  
-**Status:** Visual design and interactive HTML prototype approved; production application not yet implemented.  
+**Status:** MVP implemented (Next.js 16); remaining launch gates: Wakasamaru source register, artwork disclosure, approved synopsis and cover.  
 **Repository:** `github.com/Alimurrazi/leaf_and_line` (public)  
 **Purpose:** Give a local developer a stable reference for building **Leaf & Line**, the reusable multi-book graphic novel platform.
 
@@ -141,7 +141,7 @@ Continue Reading appears only when a record exists, and it links to that chapter
 | Artwork | Optimized WebP in `public/novels/` | Retain original PNG masters privately |
 | Progress | `localStorage` through an adapter | One versioned record per book (see §3); guard client-only access |
 | Reader state | React state/hooks | Add a state library only if complexity warrants it |
-| Zoom | Evaluate with real artwork | Candidates: `react-zoom-pan-pinch` and React Photo View (check React 19 support and swipe-versus-pan handling). OpenSeadragon only if advanced zoom or tiling is needed. Must support pinch, double-tap and pan. |
+| Zoom | react-zoom-pan-pinch 4 | **Chosen: react-zoom-pan-pinch 4** (pinch, double-tap, pan; tested on real pages). OpenSeadragon only if tiling is ever needed. |
 | Tests | Vitest + Playwright | Vitest for the content repository, `?page` clamping and the progress adapter; Playwright for reader flows, keyboard, touch emulation and responsive checks |
 | Lint | ESLint CLI | Recent Next.js versions deprecate `next lint`; use an `eslint .` script |
 | Hosting | Vercel proposed | Provider not finally committed |
@@ -233,6 +233,7 @@ type Book = {
   genres: string[];
   status: PublicationStatus;                       // editorial/publication state
   seriesStatus?: 'ongoing' | 'complete' | 'one-shot'; // story state, shown to readers
+  featured?: boolean; // at most one; the home page hero
   chapters: Chapter[];
   credits?: { role: string; name: string }[];
   contentNotes?: string[];                        // e.g. "Depictions of war violence"
@@ -242,6 +243,8 @@ type Book = {
 ```
 
 Public discovery shows only books **and** chapters whose `status` is `'published'`. `review` is reserved for the future dashboard; with content files it behaves like `draft`.
+
+Published books are listed by title. The home page features the book with `featured: true`, or the first title. The Playwright build adds a test-only fixture catalog (`LEAF_E2E_FIXTURES=1`; `src/content/books/fixtures/e2e-books.ts`) to prove multi-book behavior. Never set the flag for a real build.
 
 If panel coordinates are introduced later, store them consistently in original-image pixels or explicitly normalized coordinates; do not mix systems. Use validated unique IDs and stable slugs.
 
