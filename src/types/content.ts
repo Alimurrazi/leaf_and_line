@@ -29,13 +29,16 @@ export type Chapter = {
   pages: ComicPage[];
 };
 
+export type BookImage = { url: string; width: number; height: number; alt: string };
+
 export type Book = {
   id: string;
   slug: string;
   title: string;
   subtitle?: string;
   synopsis: string;
-  cover: { url: string; width: number; height: number; alt: string };
+  cover: BookImage; // upright front page: library cards and the book page
+  banner?: BookImage; // optional wide image for the home page hero; falls back to the cover
   genres: string[];
   status: PublicationStatus;
   seriesStatus?: "ongoing" | "complete" | "one-shot";

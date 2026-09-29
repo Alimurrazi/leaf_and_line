@@ -30,9 +30,15 @@ export const wakasamaru: Book = {
   subtitle: "A ship, a port and a time of turmoil",
   synopsis:
     "A Japanese cargo ship carrying rice for cyclone relief arrived in Chittagong in March 1971. What followed would turn a mission of relief into a witness to a much larger tragedy.",
-  // Front page exported from the title page master: scripts/export-pages.mjs ... --cover title.png
+  // Exported by: scripts/export-pages.mjs ... --cover cover.png --banner title.png
   cover: {
     url: "/novels/wakasamaru/cover.webp",
+    width: 1024,
+    height: 1536,
+    alt: "Wakasamaru cover: a ship captain at the quay railing looks up at the cargo ship Wakasamaru at sunset in Chittagong Port while dockworkers carry sacks of rice.",
+  },
+  banner: {
+    url: "/novels/wakasamaru/banner.webp",
     width: 1536,
     height: 1024,
     alt: "Wakasamaru title page: a ship captain on the quay watches the cargo ship Wakasamaru at sunset in Chittagong Port, with scenes dated 18, 24, 25 and 26 March 1971.",

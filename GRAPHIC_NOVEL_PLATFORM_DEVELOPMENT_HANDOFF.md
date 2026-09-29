@@ -229,7 +229,8 @@ type Book = {
   title: string;
   subtitle?: string;
   synopsis: string;
-  cover: { url: string; width: number; height: number; alt: string };
+  cover: { url: string; width: number; height: number; alt: string };  // upright front page (2:3): library cards, book page
+  banner?: { url: string; width: number; height: number; alt: string }; // optional wide image for the home hero; falls back to cover
   genres: string[];
   status: PublicationStatus;                       // editorial/publication state
   seriesStatus?: 'ongoing' | 'complete' | 'one-shot'; // story state, shown to readers
@@ -329,7 +330,7 @@ The approved prototype's layout and visual direction stand. These are prototype 
 | P12 | HTML caption overlays, the "↗" glyph on an internal link, unknown routes sent to the homepage, "Chapters" linking to the book page | Captions stay in the artwork; no external-link glyph on internal links; a real 404; a chapter menu in the reader |
 | P13 | `min-height: 100vh`, and three rows of controls under the stage | `dvh` units, and a compact control bar that leaves most of the height for the page on landscape phones |
 | — | "◧ NOVEL PLATFORM" placeholder brand | The **Leaf & Line** wordmark |
-| — | Book cards use a fixed 2:3 frame | Cards show the book's front page (cover) whole at its own aspect ratio, so title text is never cropped. *Wakasamaru*'s front page is the dedicated title page (`title.png`, 1536×1024). |
+| — | Book cards use a fixed 2:3 frame with placeholder art, cropped | Cards show the book's upright cover whole at its own aspect ratio (no crop). *Wakasamaru* has a dedicated 2:3 cover (`cover.png`, 1024×1536) for cards and the book page, and its landscape title page (`title.png`, 1536×1024) as the home hero **banner**. Covers are exported at most 1200px wide (2× the widest slot); aim for 1200×1800 or larger masters. |
 
 ## 9. Files to keep with the local project
 

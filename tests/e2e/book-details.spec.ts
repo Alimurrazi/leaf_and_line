@@ -11,9 +11,9 @@ test("first-time reader sees Start Reading but no Continue", async ({ page }) =>
   await expect(page.getByText("14 pages").first()).toBeVisible();
 });
 
-test("book page shows the front page and the title page's tagline", async ({ page }) => {
+test("book page shows the upright cover and the tagline", async ({ page }) => {
   await page.goto("/books/wakasamaru");
-  await expect(page.getByRole("img", { name: /Wakasamaru title page/ })).toBeVisible();
+  await expect(page.getByRole("img", { name: /Wakasamaru cover/ })).toBeVisible();
   await expect(page.getByText("A ship, a port and a time of turmoil")).toBeVisible();
 });
 

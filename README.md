@@ -16,8 +16,8 @@ Requires Node 20.9 or newer (Node 24 LTS recommended).
 
 PNG masters stay outside git (see `.gitignore`). Export them to WebP:
 
-    node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapter-NN> --quality 90 [--cover title.png | --cover 1]
+    node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapter-NN> --quality 90 [--cover cover.png] [--banner title.png]
 
-`--cover` takes the book's front-page file (for example `title.png`) or a page number to reuse.
+`--cover` is the upright 2:3 front page for library cards and the book page (scaled down to at most 1200px wide, never enlarged); aim for a 1200×1800 or larger master. `--banner` is an optional wide image for the home page hero. Either can also be a page number to reuse.
 
 Then add or extend the book in `src/content/books/` and register it in `src/content/books/index.ts`.

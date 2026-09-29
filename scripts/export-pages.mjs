@@ -1,15 +1,23 @@
 #!/usr/bin/env node
 // Export PNG masters to optimized, zero-padded WebP pages for public delivery.
-// Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90] [--cover <pageNumber | file.png>]
-// --cover takes a page number (reuse that page) or a file in <mastersDir> such as title.png (a dedicated front page).
+// Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90]
+//          [--cover <pageNumber | file.png>] [--banner <pageNumber | file.png>]
+// --cover  upright front page for library cards and the book page (e.g. cover.png); scaled down to at most
+//          COVER_MAX_WIDTH, never enlarged.
+// --banner optional wide image for the home page hero (e.g. title.png); exported at full size.
+// Either takes a page number (reuse that page) or a file in <mastersDir>.
 import { existsSync } from "node:fs";
 import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
+const COVER_MAX_WIDTH = 1200; // 2× the widest cover slot (book page ~360px, cards ~282px)
+
 const [sourceDir, bookSlug, chapterSlug, ...rest] = process.argv.slice(2);
 if (!sourceDir || !bookSlug || !chapterSlug) {
-  console.error("Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90] [--cover <n>]");
+  console.error(
+    "Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90] [--cover <n|file>] [--banner <n|file>]",
+  );
   process.exit(1);
 }
 
@@ -18,7 +26,8 @@ const option = (name, fallback) => {
   return index >= 0 ? rest[index + 1] : fallback;
 };
 const quality = Number(option("quality", "90"));
-const coverPage = option("cover", null);
+const coverSource = option("cover", null);
+const bannerSource = option("banner", null);
 
 const files = (await readdir(sourceDir))
   .map((name) => ({ name, number: Number(/(\d+)\.png$/i.exec(name)?.[1]) }))
@@ -41,12 +50,22 @@ for (const file of files) {
   report.push({ page: file.number, width: info.width, height: info.height, kb: Math.round(info.size / 1024) });
 }
 
-if (coverPage) {
-  const byNumber = /^\d+$/.test(coverPage) ? files.find((f) => f.number === Number(coverPage))?.name : coverPage;
-  const coverFile = byNumber && path.join(sourceDir, byNumber);
-  if (!coverFile || !existsSync(coverFile)) throw new Error(`Cover "${coverPage}" not found in ${sourceDir}`);
-  const info = await sharp(coverFile).webp({ quality, effort: 6 }).toFile(path.join(bookDir, "cover.webp"));
-  console.log(`cover.webp from ${path.basename(coverFile)}: ${info.width}×${info.height}`);
+function resolveMaster(source, label) {
+  const name = /^\d+$/.test(source) ? files.find((f) => f.number === Number(source))?.name : source;
+  const file = name && path.join(sourceDir, name);
+  if (!file || !existsSync(file)) throw new Error(`${label} "${source}" not found in ${sourceDir}`);
+  return file;
 }
+
+async function exportImage(source, label, outputName, maxWidth) {
+  const file = resolveMaster(source, label);
+  let image = sharp(file);
+  if (maxWidth) image = image.resize({ width: maxWidth, withoutEnlargement: true });
+  const info = await image.webp({ quality, effort: 6 }).toFile(path.join(bookDir, outputName));
+  console.log(`${outputName} from ${path.basename(file)}: ${info.width}×${info.height}, ${Math.round(info.size / 1024)} KB`);
+}
+
+if (coverSource) await exportImage(coverSource, "Cover", "cover.webp", COVER_MAX_WIDTH);
+if (bannerSource) await exportImage(bannerSource, "Banner", "banner.webp");
 
 console.table(report);

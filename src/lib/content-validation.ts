@@ -19,6 +19,7 @@ export function validateBooks(books: Book[]): string[] {
     if (bookSlugs.has(book.slug)) errors.push(`Duplicate book slug "${book.slug}"`);
     bookSlugs.add(book.slug);
     checkDimensions(book.cover, `Cover of "${book.slug}"`, errors);
+    if (book.banner) checkDimensions(book.banner, `Banner of "${book.slug}"`, errors);
 
     const chapterIds = new Set<string>();
     const chapterSlugs = new Set<string>();

@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/container";
 import { buttonClasses } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { BookGrid } from "@/features/catalog/book-grid";
+import { heroImage } from "@/lib/book-images";
 import { getFeaturedBook, getPublishedBooks } from "@/lib/content-repository";
 import { plural } from "@/lib/format";
 import { bookHref } from "@/lib/routes";
@@ -20,6 +21,8 @@ export default function HomePage() {
       </Container>
     );
   }
+
+  const hero = heroImage(featured);
 
   return (
     <>
@@ -43,10 +46,10 @@ export default function HomePage() {
           <p className="mt-6 text-[13px] text-muted">{plural(books.length, "novel")} · No account required</p>
         </div>
         <Image
-          src={featured.cover.url}
-          alt={featured.cover.alt}
-          width={featured.cover.width}
-          height={featured.cover.height}
+          src={hero.url}
+          alt={hero.alt}
+          width={hero.width}
+          height={hero.height}
           loading="eager"
           fetchPriority="high"
           sizes="(min-width: 900px) 50vw, 100vw"

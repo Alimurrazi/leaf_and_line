@@ -30,17 +30,18 @@ test("library search shows an empty state and recovers", async ({ page }) => {
   await expect(page.getByRole("link", { name: /Wakasamaru/ })).toBeVisible();
 });
 
-test("library card shows the whole front page, uncropped", async ({ page }) => {
+test("library card shows the upright cover whole, uncropped", async ({ page }) => {
   await page.goto("/library");
   const cover = page.getByRole("main").getByRole("link", { name: /Wakasamaru/ }).locator("img");
   await expect(cover).toBeVisible();
   const box = await cover.boundingBox();
-  // The title page is 1536×1024 (3:2); a cropped 2:3 frame would hide the title text.
-  expect(box!.width / box!.height).toBeCloseTo(1536 / 1024, 1);
+  // The dedicated cover is 1024×1536 (2:3), shown whole.
+  expect(box!.width / box!.height).toBeCloseTo(1024 / 1536, 1);
   expect(await cover.evaluate((el) => getComputedStyle(el).objectFit)).toBe("contain");
+  await expect(cover).toHaveAttribute("src", /\/novels\/wakasamaru\/cover\.webp$/);
 });
 
-test("home hero shows the title page as the front page", async ({ page }) => {
+test("home hero shows the landscape title page banner", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("img", { name: /Wakasamaru title page/ })).toBeVisible();
 });
