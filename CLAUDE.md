@@ -1,6 +1,6 @@
 # Leaf & Line
 
-A reusable, content-driven website for a growing library of graphic novels. *Wakasamaru* (one chapter, 14 pages at 1536×1024) is the first title, **not** a hard-coded part of the app. Status: docs and design approved; the Next.js MVP isn't built yet.
+A reusable, content-driven website for a growing library of graphic novels. *Wakasamaru* (one chapter, 14 pages at 1536×1024) is the first title, **not** a hard-coded part of the app. Status: MVP implemented; see the handoff's acceptance checklist for launch gates.
 
 ## Read first
 - `GRAPHIC_NOVEL_PLATFORM_DEVELOPMENT_HANDOFF.md` — **authoritative for the MVP**: design tokens, page behavior, content model, prototype deviations, acceptance checklist.
@@ -28,3 +28,6 @@ Next.js App Router + TypeScript, Tailwind v4 (tokens in `globals.css` under `@th
 ## Workflow
 - Implementation plans go in `docs/superpowers/plans/YYYY-MM-DD-<name>.md`, and design specs in `docs/superpowers/specs/`. `docs/` is gitignored, so these stay local and are never pushed.
 - Don't commit or push without being asked. The repo is public.
+
+## Next.js version notes
+@AGENTS.md

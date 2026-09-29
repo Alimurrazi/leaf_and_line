@@ -3,7 +3,7 @@
 *Graphic Novel Platform*
 
 **Date:** 24 September 2026 (revised 29 September 2026: name, review findings, prototype deviations)  
-**Status:** Visual design and interactive HTML prototype approved; production application not yet implemented.  
+**Status:** MVP implemented (Next.js 16); remaining launch gates: Wakasamaru source register, artwork disclosure, approved synopsis and cover.  
 **Repository:** `github.com/Alimurrazi/leaf_and_line` (public)  
 **Purpose:** Give a local developer a stable reference for building **Leaf & Line**, the reusable multi-book graphic novel platform.
 
@@ -141,7 +141,7 @@ Continue Reading appears only when a record exists, and it links to that chapter
 | Artwork | Optimized WebP in `public/novels/` | Retain original PNG masters privately |
 | Progress | `localStorage` through an adapter | One versioned record per book (see §3); guard client-only access |
 | Reader state | React state/hooks | Add a state library only if complexity warrants it |
-| Zoom | Evaluate with real artwork | Candidates: `react-zoom-pan-pinch` and React Photo View (check React 19 support and swipe-versus-pan handling). OpenSeadragon only if advanced zoom or tiling is needed. Must support pinch, double-tap and pan. |
+| Zoom | react-zoom-pan-pinch 4 | **Chosen: react-zoom-pan-pinch 4** (pinch, double-tap, pan; tested on real pages). OpenSeadragon only if tiling is ever needed. |
 | Tests | Vitest + Playwright | Vitest for the content repository, `?page` clamping and the progress adapter; Playwright for reader flows, keyboard, touch emulation and responsive checks |
 | Lint | ESLint CLI | Recent Next.js versions deprecate `next lint`; use an `eslint .` script |
 | Hosting | Vercel proposed | Provider not finally committed |
@@ -229,10 +229,12 @@ type Book = {
   title: string;
   subtitle?: string;
   synopsis: string;
-  cover: { url: string; width: number; height: number; alt: string };
+  cover: { url: string; width: number; height: number; alt: string };  // upright front page (2:3): library cards, book page
+  banner?: { url: string; width: number; height: number; alt: string }; // optional wide image for the home hero; falls back to cover
   genres: string[];
   status: PublicationStatus;                       // editorial/publication state
   seriesStatus?: 'ongoing' | 'complete' | 'one-shot'; // story state, shown to readers
+  featured?: boolean; // at most one; the home page hero
   chapters: Chapter[];
   credits?: { role: string; name: string }[];
   contentNotes?: string[];                        // e.g. "Depictions of war violence"
@@ -242,6 +244,8 @@ type Book = {
 ```
 
 Public discovery shows only books **and** chapters whose `status` is `'published'`. `review` is reserved for the future dashboard; with content files it behaves like `draft`.
+
+Published books are listed by title. The home page features the book with `featured: true`, or the first title. The Playwright build adds a test-only fixture catalog (`LEAF_E2E_FIXTURES=1`; `src/content/books/fixtures/e2e-books.ts`) to prove multi-book behavior. Never set the flag for a real build.
 
 If panel coordinates are introduced later, store them consistently in original-image pixels or explicitly normalized coordinates; do not mix systems. Use validated unique IDs and stable slugs.
 
@@ -326,6 +330,7 @@ The approved prototype's layout and visual direction stand. These are prototype 
 | P12 | HTML caption overlays, the "↗" glyph on an internal link, unknown routes sent to the homepage, "Chapters" linking to the book page | Captions stay in the artwork; no external-link glyph on internal links; a real 404; a chapter menu in the reader |
 | P13 | `min-height: 100vh`, and three rows of controls under the stage | `dvh` units, and a compact control bar that leaves most of the height for the page on landscape phones |
 | — | "◧ NOVEL PLATFORM" placeholder brand | The **Leaf & Line** wordmark |
+| — | Book cards use a fixed 2:3 frame with placeholder art, cropped | Cards show the book's upright cover whole at its own aspect ratio (no crop). *Wakasamaru* has a dedicated 2:3 cover (`cover.png`, 1024×1536) for cards and the book page, and its landscape title page (`title.png`, 1536×1024) as the home hero **banner**. Covers are exported at most 1200px wide (2× the widest slot); aim for 1200×1800 or larger masters. |
 
 ## 9. Files to keep with the local project
 

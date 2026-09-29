@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-md: 56.25rem; /* 900px, the prototype's tablet breakpoint */
+
+  --color-bg: #faf9f6;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-muted: #626262;
+  --color-border: #e7e4de;
+  --color-accent: #b88a43; /* decorative only: 2.95:1 on bg, never for text */
+  --color-accent-text: #8a6532;
+  --color-accent-hover: #926b35;
+  --color-focus: #a16d23;
+  --color-action: #242424;
+  --color-reader: #111318;
+  --color-reader-stage: #1d2026;
+  --color-reader-border: #34373d;
+  --color-reader-text: #f5f1e9;
+  --color-reader-progress: #c6a16a;
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, sans-serif;
+}
+
+:root {
+  --content-max: 1200px;
+}
+
+@layer base {
+  body {
+    @apply bg-bg font-sans text-text;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

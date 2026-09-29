@@ -16,3 +16,24 @@ Thumbs.db
 
 # Local planning docs (superpowers plans/specs)
 docs/
+
+# Next.js / tooling (from create-next-app)
+/coverage
+/build
+*.pem
+npm-debug.log*
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# Test output
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Test-only fixture images (scripts/make-e2e-fixtures.mjs)
+/public/novels/_e2e/
+
+# Extracted approved prototype (the zip is the tracked copy)
+/graphic-novel-prototype/
