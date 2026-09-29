@@ -28,3 +28,6 @@ Next.js App Router + TypeScript, Tailwind v4 (tokens in `globals.css` under `@th
 ## Workflow
 - Implementation plans go in `docs/superpowers/plans/YYYY-MM-DD-<name>.md`, and design specs in `docs/superpowers/specs/`. `docs/` is gitignored, so these stay local and are never pushed.
 - Don't commit or push without being asked. The repo is public.
+
+## Next.js version notes
+@AGENTS.md
