@@ -30,6 +30,21 @@ test("library search shows an empty state and recovers", async ({ page }) => {
   await expect(page.getByRole("link", { name: /Wakasamaru/ })).toBeVisible();
 });
 
+test("library card shows the whole front page, uncropped", async ({ page }) => {
+  await page.goto("/library");
+  const cover = page.getByRole("main").getByRole("link", { name: /Wakasamaru/ }).locator("img");
+  await expect(cover).toBeVisible();
+  const box = await cover.boundingBox();
+  // The title page is 1536×1024 (3:2); a cropped 2:3 frame would hide the title text.
+  expect(box!.width / box!.height).toBeCloseTo(1536 / 1024, 1);
+  expect(await cover.evaluate((el) => getComputedStyle(el).objectFit)).toBe("contain");
+});
+
+test("home hero shows the title page as the front page", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("img", { name: /Wakasamaru title page/ })).toBeVisible();
+});
+
 test("library card opens the book page", async ({ page }) => {
   await page.goto("/library");
   await page.getByRole("main").getByRole("link", { name: /Wakasamaru/ }).click();

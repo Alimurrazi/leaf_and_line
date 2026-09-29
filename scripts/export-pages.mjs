@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Export PNG masters to optimized, zero-padded WebP pages for public delivery.
-// Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90] [--cover <pageNumber>]
+// Usage: node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapterSlug> [--quality 90] [--cover <pageNumber | file.png>]
+// --cover takes a page number (reuse that page) or a file in <mastersDir> such as title.png (a dedicated front page).
+import { existsSync } from "node:fs";
 import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
@@ -40,9 +42,11 @@ for (const file of files) {
 }
 
 if (coverPage) {
-  const file = files.find((f) => f.number === Number(coverPage));
-  if (!file) throw new Error(`Cover page ${coverPage} not found`);
-  await sharp(path.join(sourceDir, file.name)).webp({ quality, effort: 6 }).toFile(path.join(bookDir, "cover.webp"));
+  const byNumber = /^\d+$/.test(coverPage) ? files.find((f) => f.number === Number(coverPage))?.name : coverPage;
+  const coverFile = byNumber && path.join(sourceDir, byNumber);
+  if (!coverFile || !existsSync(coverFile)) throw new Error(`Cover "${coverPage}" not found in ${sourceDir}`);
+  const info = await sharp(coverFile).webp({ quality, effort: 6 }).toFile(path.join(bookDir, "cover.webp"));
+  console.log(`cover.webp from ${path.basename(coverFile)}: ${info.width}×${info.height}`);
 }
 
 console.table(report);

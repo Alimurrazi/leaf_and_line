@@ -7,6 +7,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 // Add a short scene summary for each page as the editorial review covers it.
 const pageAlt: Record<number, string> = {
   1: "18 March 1971, Chittagong Port. The Japanese cargo ship Wakasamaru arrives with rice for Bengali cyclone survivors, but dockworkers on a hartal (general strike) refuse to unload it until Captain Kazuo Ito obtains permission.",
+  3: "25 March 1971, Chittagong Port. Pakistani troops move weapons and supplies through the port while Captain Ito watches from the bridge; that night Operation Searchlight begins in Dhaka and fighting breaks out in Chittagong.",
 };
 
 const pages: ComicPage[] = Array.from({ length: PAGE_COUNT }, (_, i) => {
@@ -25,15 +26,16 @@ export const wakasamaru: Book = {
   id: "wakasamaru",
   slug: "wakasamaru",
   title: "Wakasamaru",
-  // Draft copy based on page 1. Replace it with the approved synopsis before launch.
+  // Tagline and synopsis are taken from the title page artwork (title.png).
+  subtitle: "A ship, a port and a time of turmoil",
   synopsis:
-    "March 1971. The Japanese cargo ship Wakasamaru reaches Chittagong Port carrying about 5,100 tons of rice for Bengali people still recovering from the 1970 cyclone — and finds the port gripped by a general strike.",
-  // Temporary cover cut from page 1 by scripts/export-pages.mjs (--cover 1) until dedicated cover art exists.
+    "A Japanese cargo ship carrying rice for cyclone relief arrived in Chittagong in March 1971. What followed would turn a mission of relief into a witness to a much larger tragedy.",
+  // Front page exported from the title page master: scripts/export-pages.mjs ... --cover title.png
   cover: {
     url: "/novels/wakasamaru/cover.webp",
     width: 1536,
     height: 1024,
-    alt: "The cargo ship Wakasamaru at anchor in Chittagong Port, 1971.",
+    alt: "Wakasamaru title page: a ship captain on the quay watches the cargo ship Wakasamaru at sunset in Chittagong Port, with scenes dated 18, 24, 25 and 26 March 1971.",
   },
   genres: ["Historical"],
   status: "published",

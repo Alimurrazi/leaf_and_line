@@ -329,6 +329,7 @@ The approved prototype's layout and visual direction stand. These are prototype 
 | P12 | HTML caption overlays, the "↗" glyph on an internal link, unknown routes sent to the homepage, "Chapters" linking to the book page | Captions stay in the artwork; no external-link glyph on internal links; a real 404; a chapter menu in the reader |
 | P13 | `min-height: 100vh`, and three rows of controls under the stage | `dvh` units, and a compact control bar that leaves most of the height for the page on landscape phones |
 | — | "◧ NOVEL PLATFORM" placeholder brand | The **Leaf & Line** wordmark |
+| — | Book cards use a fixed 2:3 frame | Cards show the book's front page (cover) whole at its own aspect ratio, so title text is never cropped. *Wakasamaru*'s front page is the dedicated title page (`title.png`, 1536×1024). |
 
 ## 9. Files to keep with the local project
 
