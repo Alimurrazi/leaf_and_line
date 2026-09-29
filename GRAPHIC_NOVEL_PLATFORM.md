@@ -1,8 +1,11 @@
-# Graphic Novel Platform — Project Handover
+# Leaf & Line — Project Handover
 
-**Status:** Planning / architecture handover  
+*Graphic Novel Platform*
+
+**Status:** Visual design and prototype approved; MVP implementation not yet started  
 **Purpose:** Build a reusable website for a growing collection of graphic novels. *Wakasamaru* is the first title, **not** the platform's hard-coded subject.  
-**Last updated:** 24 September 2026
+**Repository:** `github.com/Alimurrazi/leaf_and_line`  
+**Last updated:** 29 September 2026
 
 ## 1. Product vision
 
@@ -34,6 +37,8 @@ A reader visits a digital library, discovers a graphic novel, opens its detail p
 These are design decisions under discussion, **not installed dependencies or a working application**.
 
 ## 3. Suggested content model
+
+> The **canonical** content model is in `GRAPHIC_NOVEL_PLATFORM_DEVELOPMENT_HANDOFF.md` §4. It extends this sketch with alt text, content notes, per-chapter release state and panel reading order.
 
 ```ts
 type Book = {
@@ -84,6 +89,8 @@ Store panel coordinates in original-image pixels (or explicitly normalized coord
 
 Keep a source register for each historical book. Distinguish documented events and quotations from paraphrases, inferred motives, reconstructed dialogue and artistic visual choices. Do not treat AI-generated depictions as archival photographs. Include content notes where appropriate, especially for depictions of violence and deceased people. This is an editorial requirement, not a claim that all historical details have already been verified.
 
+**Launch gate for *Wakasamaru*:** the artwork already states specific facts: the date (18 March 1971), the ship, the cargo (about 5,100 tons of rice), the captain's name (Kazuo Ito) and the port. Before the book is published, (1) complete its source register for every factual claim on the pages, and (2) show a credits/disclosure line that says how the artwork was made, so it can't be mistaken for archival imagery.
+
 ## 7. Proposed delivery phases
 
 1. **MVP:** book catalog, book detail, chapter/page schema, responsive full-page reader, previous/next, keyboard navigation, zoom, fullscreen and local progress.
@@ -93,9 +100,15 @@ Keep a source register for each historical book. Distinguish documented events a
 
 ## 8. Decisions and open questions
 
-**Decided:** multi-book platform; *Wakasamaru* is first title; reusable reader; full-page mode first; preserve artwork's aspect ratio; guided panels are a desirable later feature.  
-**Not decided:** website name/brand, hosting and storage provider, CMS versus files, user accounts, whether books are free or paid, chapter release model, admin authentication, and whether to add a .NET API. Do not assume these choices have been made.
+**Decided:**
+- Multi-book platform named **Leaf & Line** (repository `leaf_and_line`).
+- *Wakasamaru* is the first title: **one 14-page chapter** (`chapter-01`). The "To be continued…" on page 1 is part of the artwork, not a chapter break.
+- Reusable reader; full-page mode first; preserve artwork's aspect ratio; guided panels are a desirable later feature.
+- Visual direction: **Modern Editorial, warm white** public site, Manrope/Inter, with a separate dark reader (see the development handoff).
+- Original PNG masters are kept out of the public repository.
 
-## 9. ChatGPT project workflow
+**Not decided:** brand mark/logo, domain, hosting and storage provider, CMS versus files, user accounts, whether books are free or paid, chapter release model, admin authentication, and whether to add a .NET API. Do not assume these choices have been made.
 
-Keep this document in a **Graphic Novel Platform** project, along with code/design files. Keep each book's visual bible and approved artwork in its own production project. For new work, start by reading this document and the relevant book's handover. When implementation changes a decision, update this file. Never assume a previous generated mockup is a functioning website.
+## 9. Working with this repository
+
+These documents live in the root of the `leaf_and_line` repository, next to the code. `CLAUDE.md` points to them and lists the architectural rules. Implementation plans go in `docs/superpowers/plans/`, and design specs in `docs/superpowers/specs/`. The `docs/` folder is gitignored, so these stay local. Keep each book's visual bible and original artwork masters in private storage outside the repository. When implementation changes a decision, update this file. Never assume a previous generated mockup is a functioning website.

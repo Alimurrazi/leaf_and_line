@@ -1,8 +1,10 @@
-# Graphic Novel Platform — MVP and Long-Term Implementation Plan
+# Leaf & Line — MVP and Long-Term Implementation Plan
+
+*Graphic Novel Platform*
 
 **Status:** Architecture proposal; implementation not yet started  
-**Updated:** 24 September 2026  
-**Related document:** `GRAPHIC_NOVEL_PLATFORM.md` (product and project handover)
+**Updated:** 29 September 2026  
+**Related documents:** `GRAPHIC_NOVEL_PLATFORM.md` (product and project handover); `GRAPHIC_NOVEL_PLATFORM_DEVELOPMENT_HANDOFF.md` (approved design and dev handoff; **takes precedence** over this document for MVP details)
 
 ## 1. Purpose and guiding principle
 
@@ -24,7 +26,7 @@ Launch a public website where readers can discover a novel, view its details, re
 - Book detail pages with cover, synopsis, chapter list, credits, and source notes where relevant.
 - Reusable full-page reader with previous/next controls, page counter, keyboard navigation, touch navigation, fullscreen, zoom/pan, and chapter navigation.
 - Preserve the entire page by default (`object-fit: contain`); never stretch or crop artwork in full-page mode.
-- Local reading progress in `localStorage`, keyed by book and chapter. A page URL should be shareable and recoverable.
+- Local reading progress in `localStorage`: one versioned record per book that stores the last chapter and page (see the handoff for the shape). A page URL should be shareable and recoverable.
 - Responsive desktop, tablet, and mobile layouts; test caption legibility on actual phones.
 - Accessible controls, visible keyboard focus, and descriptive page text or scene summaries where feasible.
 
@@ -48,7 +50,7 @@ Launch a public website where readers can discover a novel, view its details, re
 | Hosting | Vercel (proposed) | Straightforward Next.js deployment |
 | Backend | No separate API | The MVP has no independent backend requirement |
 
-Evaluate React Photo View against the actual pages for straightforward zoom/pan. Consider OpenSeadragon only if more advanced zoom or tiled images are necessary. Do not commit to either library before testing. Preload the next page selectively rather than downloading the entire book.
+Evaluate React Photo View and `react-zoom-pan-pinch` against the actual pages for straightforward zoom/pan (check React 19 compatibility and how each handles swipe-versus-pan). Consider OpenSeadragon only if more advanced zoom or tiled images are necessary. Do not commit to a library before testing. Pinch-zoom and double-tap zoom are **required** for the MVP: *Wakasamaru*'s captions render at about 3.5px on a portrait phone when the whole page is shown. Preload the next page selectively rather than downloading the entire book.
 
 ## 4. MVP architecture
 
@@ -89,7 +91,7 @@ For *Wakasamaru*, the agreed artwork format is **1536 × 1024, landscape (3:2)**
 Example structure:
 
 ```text
-graphic-novel-platform/
+leaf_and_line/
 ├── public/
 │   └── novels/
 │       └── wakasamaru/
@@ -100,21 +102,25 @@ graphic-novel-platform/
 │               └── ... page-14.webp
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx
-│   │   ├── library/page.tsx
-│   │   ├── books/[slug]/page.tsx
-│   │   └── read/[bookSlug]/[chapterSlug]/page.tsx
+│   │   ├── (public)/            # light editorial layout
+│   │   │   ├── page.tsx
+│   │   │   ├── library/page.tsx
+│   │   │   └── books/[slug]/page.tsx
+│   │   └── (reading)/           # dark reader layout
+│   │       └── read/[bookSlug]/[chapterSlug]/page.tsx
 │   ├── features/
 │   │   ├── catalog/
 │   │   ├── books/
 │   │   ├── reader/{components,hooks,renderers,utils}/
 │   │   └── reading-progress/
-│   ├── content/{books,repository.ts}
+│   ├── content/books/
 │   ├── components/ui/
-│   ├── lib/
+│   ├── lib/content-repository.ts
 │   └── types/
 └── tests/
 ```
+
+The route groups and repository path follow the development handoff, which is authoritative for the MVP layout.
 
 Store original PNG masters separately; serve carefully optimized WebP copies, verifying that captions and fine details remain readable. Store URLs in page metadata so image hosting can change later without rewriting the reader.
 
@@ -258,11 +264,11 @@ These changes are not a rigid dependency chain: guided panels need no database; 
 
 ## 13. Decisions still open
 
-- Platform name and visual brand.
+- ~~Platform name and visual brand.~~ **Decided:** the name is **Leaf & Line**, and the visual direction is Modern Editorial (see the handoff). The brand mark/logo and domain are still open.
 - Final hosting provider and image-storage provider.
 - Whether the catalog will remain entirely free or eventually include paid books.
 - Whether a CMS or custom database/dashboard best fits the eventual publishing workflow.
 - Whether user accounts and a separate .NET API will ever be necessary.
 - Which zoom library works best with real comic pages.
 
-**Current working default:** Next.js + TypeScript, typed content files, 14 optimized images in `public/`, local reading progress, Vercel as a proposed host, and no separate backend for MVP. Revisit decisions when requirements change; update this document alongside the project handover.
+**Current working default:** Leaf & Line on Next.js + TypeScript, typed content files, 14 optimized images in `public/` (PNG masters kept out of the repository), local reading progress, Vercel as a proposed host, and no separate backend for MVP. Revisit decisions when requirements change; update this document alongside the project handover.

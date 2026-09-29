@@ -1,0 +1,18 @@
+# Original artwork masters: keep private, never commit
+Wakasamaru_ship_1971/
+masters/
+*.master.png
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+
+# Env and OS
+.env*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# Local planning docs (superpowers plans/specs)
+docs/
