@@ -20,7 +20,7 @@ A reader visits a digital library, discovers a graphic novel, opens its detail p
 - Save progress locally for anonymous readers initially; optional sync across devices after accounts are introduced.
 
 ### Publisher experience
-- Initial release may use structured content files and image assets; no admin dashboard required at launch.
+- Initial release uses JSON content files and image assets, prepared with a local-only studio (never deployed); no admin dashboard required at launch.
 - Future private dashboard: create/edit book, upload cover, create/reorder chapters, upload/reorder pages, enter panel boundaries, preview and publish/unpublish.
 - Publishing workflow should distinguish draft, review and published versions and retain source/master artwork.
 

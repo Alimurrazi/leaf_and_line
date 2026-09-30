@@ -32,7 +32,7 @@ Launch a public website where readers can discover a novel, view its details, re
 
 ### Publisher features
 
-- Add books, chapters, and pages using typed content files and image assets.
+- Add books, chapters, and pages as JSON content files and image assets, prepared with the local-only studio (`npm run dev` → `/studio`), which checks artwork, exports WebP, writes page sizes and sets publication status. Publishing is still a commit and deploy.
 - Publish by updating the repository and deploying the application.
 - No admin dashboard, database, reader accounts, or separate .NET API at launch.
 
@@ -189,7 +189,7 @@ Artwork should normally be delivered directly through a CDN URL rather than prox
 
 ### 9.3 Manual publishing → Private dashboard
 
-**MVP:** The publisher adds assets and content files, then deploys.
+**MVP:** The publisher drops originals into `artwork-originals/<slug>/`, uses the local-only studio to check, export, review and set the status, then commits and deploys. The studio is a development tool and is never deployed. It is the first step towards this dashboard: its checks, export and content store (`src/studio/`) can move behind an authenticated dashboard later.
 
 **Why change:** Uploading images, creating chapters, reordering pages, previewing books, and publishing should eventually be possible without editing code. The dashboard should enforce authorization and distinguish draft, review, and published content. Preserve source/master artwork and a revision history where practical.
 
@@ -271,4 +271,4 @@ These changes are not a rigid dependency chain: guided panels need no database; 
 - Whether user accounts and a separate .NET API will ever be necessary.
 - ~~Which zoom library works best with real comic pages.~~ **Decided:** react-zoom-pan-pinch.
 
-**Current working default:** Leaf & Line on Next.js + TypeScript, typed content files, 14 optimized images in `public/` (PNG masters kept out of the repository), local reading progress, Vercel as a proposed host, and no separate backend for MVP. Revisit decisions when requirements change; update this document alongside the project handover.
+**Current working default:** Leaf & Line on Next.js + TypeScript, JSON content files with a generated index and a local-only studio for adding books, 14 optimized images in `public/` (PNG masters kept out of the repository), local reading progress, Vercel as a proposed host, and no separate backend for MVP. Revisit decisions when requirements change; update this document alongside the project handover.

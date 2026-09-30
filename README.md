@@ -4,20 +4,20 @@ A library of graphic novels, read one full page at a time. See `CLAUDE.md` and t
 
 ## Develop
 
-Requires Node 20.9 or newer (Node 24 LTS recommended).
+Requires Node 22.18 or newer (Node 24 LTS recommended, see `.nvmrc`). The book index generator runs TypeScript directly.
 
     npm install
-    npm run dev          # http://localhost:3000
+    npm run dev          # http://localhost:3000 (localhost only; the studio lives here)
+    npm run dev:lan      # same, reachable from your network (phone testing; exposes the studio too)
     npm test             # unit tests (Vitest)
-    npm run e2e          # end-to-end tests (Playwright; run `npx playwright install chromium` once)
+    npm run e2e          # end-to-end tests (Playwright; run `npx playwright install chromium` once).
+                         # It runs `next build`, which stops a running `npm run dev`: stop the dev server first.
     npm run lint && npm run typecheck && npm run build
 
-## Add artwork
+## Add a book
 
-PNG masters stay outside git (see `.gitignore`). Export them to WebP:
+1. Put the original PNGs in `artwork-originals/<book-slug>/`: `cover.png` (upright, about 2:3, 1200px+ wide), an optional `banner.png`, and `chapter-01/1.png, 2.png …`. This folder is gitignored; originals are never committed.
+2. Run `npm run dev` and open [localhost:3000/studio](http://localhost:3000/studio). The studio checks the folder, exports WebP, fills in the page sizes, and takes the book through review, the editorial checklist and publish.
+3. Commit the files the studio lists (the book's JSON and its WebP files).
 
-    node scripts/export-pages.mjs <mastersDir> <bookSlug> <chapter-NN> --quality 90 [--cover cover.png] [--banner title.png]
-
-`--cover` is the upright 2:3 front page for library cards and the book page (scaled down to at most 1200px wide, never enlarged); aim for a 1200×1800 or larger master. `--banner` is an optional wide image for the home page hero. Either can also be a page number to reuse.
-
-Then add or extend the book in `src/content/books/` and register it in `src/content/books/index.ts`.
+The studio only runs under `npm run dev`; production builds serve 404 for it. The full walkthrough is in [ADDING_A_BOOK.md](ADDING_A_BOOK.md).
