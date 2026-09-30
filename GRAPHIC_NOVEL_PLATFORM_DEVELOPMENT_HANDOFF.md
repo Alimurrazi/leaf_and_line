@@ -19,7 +19,7 @@
 - **MVP scope:** Published-book discovery, details, chapter/page reading, previous/next, keyboard and touch navigation, zoom/pan, fullscreen, responsive layout, and local progress.
 - **Zoom is a hard requirement:** pinch-zoom, double-tap zoom and drag-to-pan must work on touch devices. *Wakasamaru*'s captions are about 13–14px tall at 1536px. With the whole page shown, that's about 3.5px on a portrait phone (about 390px wide) and about 7px on a landscape phone, which can't be read without zoom.
 - **Fullscreen must degrade gracefully:** iOS Safari on iPhone doesn't support the Fullscreen API for non-video elements. Where it's missing, the fullscreen button switches to an in-page **immersive mode** that hides the site chrome, fills the viewport (`100dvh`) and keeps the reader controls reachable.
-- **Not MVP:** Authentication, billing, subscriptions, newsletter backend, publisher dashboard, database, separate .NET API, guided-panel mode, or site-wide dark-mode toggle.
+- **Not MVP:** Authentication, billing, subscriptions, newsletter backend, a deployed publisher dashboard, database, separate .NET API, guided-panel mode, or site-wide dark-mode toggle. (A **local-only studio** for adding books runs under `npm run dev` and is never deployed; see §4.)
 
 ## 2. Design tokens
 
@@ -179,13 +179,13 @@ leaf_and_line/
 │   └── lib/
 │       └── content-repository.ts
 ├── tests/                      # Vitest unit tests + Playwright e2e
-├── scripts/export-pages.*      # PNG master → WebP export (see below)
+├── artwork-originals/          # private PNG originals per book (gitignored, README only)
 └── ...
 ```
 
 The design tokens live in `src/app/globals.css` under `@theme` (Tailwind v4), so there's no separate `tokens.css`.
 
-**Artwork export.** The originals are named `page_1.png … page_14.png`. They aren't zero-padded and use an underscore. A small script (for example using `sharp`) converts them to `public/novels/<book>/chapter-NN/page-NN.webp` with zero-padded names, and records each page's width and height for the content file. Before approving a quality setting, compare caption sharpness at 100% and 200% zoom against the PNG.
+**Artwork export and the local studio.** Originals go in `artwork-originals/<slug>/` (`cover.png`, optional `banner.png`, `chapter-NN/1.png … n.png`). This folder is gitignored apart from its README. The **studio** (`npm run dev` → `/studio`; code in `src/studio/` and `src/app/(studio)/`) checks the folder, exports WebP with `sharp` to `public/novels/<book>/chapter-NN/page-NN.webp` (quality 90; covers at most 1200px wide), and writes each page's width and height into the book's JSON. It also takes the book through review, the editorial gate (§7) and publish. It never commits: publishing still means committing the JSON and WebP files and deploying. The studio is **local only**. Its pages return 404 and its actions refuse outside `NODE_ENV=development`, so it adds no dashboard, API or account to the deployed site. Book content lives in `src/content/books/<slug>.json`, listed by the generated `index.generated.ts` (`npm run content:index`; don't edit it by hand). Before approving a quality setting, compare caption sharpness at 100% and 200% zoom against the PNG. The studio's review step asks for this check.
 
 **Repository contract:** expose functions such as `getPublishedBooks()`, `getBookBySlug(slug)`, and `getChapter(bookSlug, chapterSlug)`. UI components must not import a specific book file directly. Keep progress storage separate from page rendering so it can later move to an account-backed service.
 
@@ -243,7 +243,7 @@ type Book = {
 };
 ```
 
-Public discovery shows only books **and** chapters whose `status` is `'published'`. `review` is reserved for the future dashboard; with content files it behaves like `draft`.
+Public discovery shows only books **and** chapters whose `status` is `'published'`. `review` is set by the local studio's "Send to review" step; the public site treats it like `draft`.
 
 Published books are listed by title. The home page features the book with `featured: true`, or the first title. The Playwright build adds a test-only fixture catalog (`LEAF_E2E_FIXTURES=1`; `src/content/books/fixtures/e2e-books.ts`) to prove multi-book behavior. Never set the flag for a real build.
 
@@ -304,6 +304,7 @@ Open the local URL printed by Next.js. Copy the **design and behavior** from the
 - [ ] No unfinished account, payment or newsletter UI is exposed as functional.
 - [ ] *Wakasamaru*'s source register is complete, and its artwork disclosure and content notes are shown (launch gate; see `GRAPHIC_NOVEL_PLATFORM.md` §6).
 - [ ] No PNG masters are committed; only optimized WebP files are in `public/novels/`.
+- [x] The local studio is not served by production builds: `/studio` returns 404 (Playwright `studio.spec.ts`).
 - [ ] `npm run lint`, `npm test` and `npm run build` pass; the Playwright reader suite passes.
 
 ## 7. Editorial and artwork safeguards

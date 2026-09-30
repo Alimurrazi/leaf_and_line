@@ -17,9 +17,14 @@ When the docs conflict, the handoff wins. When a decision changes, update the do
 4. Rendering and progress storage stay separate. Progress goes through an adapter (versioned `localStorage` key per book).
 5. Default view: the whole page is visible (contain), never cropped or stretched. Zoom (pinch, double-tap, pan) is required.
 6. Don't add accounts, payments, a newsletter, a database or a separate API in the MVP, and don't show fake UI for them.
+7. The studio (`/studio`, `src/studio/`, `src/app/(studio)/`) is a local tool. Every page and action checks `studioEnabled()` / `assertStudio()` (dev only), and production must keep serving 404 for it. Keep `sharp` behind dynamic imports on studio routes.
+
+## Books and content
+- Add books with the studio: `npm run dev` → `/studio`. See `ADDING_A_BOOK.md`.
+- Each book is `src/content/books/<slug>.json`. `index.generated.ts` lists them: never edit it by hand (`npm run content:index`). The studio validates the whole catalog before every write.
 
 ## Artwork and editorial
-- Original PNG masters are **never committed**. This repo is public, and the masters folder is gitignored. Only optimized WebP files go in `public/novels/<book>/chapter-NN/page-NN.webp`.
+- Original PNGs ("originals") are **never committed**. This repo is public. They go in `artwork-originals/<slug>/`, which is gitignored apart from its README. Only optimized WebP files go in `public/novels/<book>/chapter-NN/page-NN.webp`.
 - Historical books need a source register. AI or illustrated artwork must not be presented as archival imagery.
 
 ## Stack (planned)

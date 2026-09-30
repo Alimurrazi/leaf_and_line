@@ -19,6 +19,16 @@
   --color-reader-text: #f5f1e9;
   --color-reader-progress: #c6a16a;
 
+  /* Studio status colors (local tool only). Text colors pass AA on bg and on their tint. */
+  --color-ok: #2f6b3a;
+  --color-ok-tint: #e4efe5;
+  --color-warn: #7a5000;
+  --color-warn-tint: #f6ead2;
+  --color-error: #a3342b;
+  --color-error-tint: #f5e1de;
+  --color-chip: #efede7;
+  --color-chip-text: #61553e;
+
   --radius-control: 8px;
   --radius-card: 12px;
 }

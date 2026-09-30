@@ -2,14 +2,19 @@
   "name": "leaf-and-line",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H localhost",
+    "dev:lan": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "content:index": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON src/studio/content-index.ts"
   },
   "dependencies": {
     "next": "16.3.7",

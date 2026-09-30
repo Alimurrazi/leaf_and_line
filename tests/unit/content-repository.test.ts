@@ -109,6 +109,17 @@ describe("createContentRepository", () => {
     const repo = createContentRepository([makeBook("alpha", { title: "Alpha" }), makeBook("zeta", { status: "draft", featured: true })]);
     expect(repo.getFeaturedBook()?.slug).toBe("alpha");
   });
+
+  it("includes draft books and chapters when asked (studio preview)", () => {
+    const draft = makeBook("draft", {
+      status: "draft",
+      chapters: [makeChapter("chapter-01", 1, { status: "draft" }), makeChapter("chapter-02", 2, { status: "review" })],
+    });
+    const repo = createContentRepository([makeBook("alpha"), draft], { includeUnpublished: true });
+    expect(repo.getPublishedBooks().map((b) => b.slug)).toEqual(["alpha", "draft"]);
+    expect(repo.getChapter("draft", "chapter-01")?.next).toEqual({ slug: "chapter-02", title: "Chapter 2" });
+    expect(repo.getChapter("draft", "chapter-02")?.chapter.pages[0].alt).toBe("DRAFT, Chapter 2, page 1");
+  });
 });
 
 describe("validateBooks", () => {
@@ -139,6 +150,25 @@ describe("validateBooks", () => {
   it("rejects more than one featured book", () => {
     const errors = validateBooks([makeBook("alpha", { featured: true }), makeBook("beta", { featured: true })]);
     expect(errors).toContain('More than one featured book: "alpha", "beta"');
+  });
+
+  it("catches what TypeScript used to catch in hand-edited JSON", () => {
+    const bad = {
+      ...makeBook("typo"),
+      status: "publised",
+      title: " ",
+      seriesStatus: "weekly",
+      sourceNotesUrl: "javascript:alert(1)",
+      chapters: [makeChapter("chapter-01", 1, { status: "live" as never, pages: [makePage("chapter-01", 1, { imageUrl: "" })] })],
+    } as unknown as Book;
+    expect(validateBooks([bad])).toEqual([
+      'Book "typo" has unknown status "publised"',
+      'Book "typo" has no title',
+      'Book "typo" has unknown series status "weekly"',
+      'Book "typo" source notes link must start with http:// or https://',
+      'Chapter "typo/chapter-01" has unknown status "live"',
+      'Page 1 of "typo/chapter-01" has no image URL',
+    ]);
   });
 
   it("accepts the real content", () => {

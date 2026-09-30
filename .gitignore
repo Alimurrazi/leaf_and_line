@@ -1,6 +1,7 @@
-# Original artwork masters: keep private, never commit
+# Original artwork (PNG): keep private, never commit. Only the README in artwork-originals/ is tracked.
 Wakasamaru_ship_1971/
-masters/
+artwork-originals/*
+!artwork-originals/README.md
 *.master.png
 
 # Dependencies and build output

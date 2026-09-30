@@ -1,0 +1,135 @@
+{
+  "id": "wakasamaru",
+  "slug": "wakasamaru",
+  "title": "Wakasamaru",
+  "subtitle": "A ship, a port and a time of turmoil",
+  "synopsis": "A Japanese cargo ship carrying rice for cyclone relief arrived in Chittagong in March 1971. What followed would turn a mission of relief into a witness to a much larger tragedy.",
+  "cover": {
+    "url": "/novels/wakasamaru/cover.webp",
+    "width": 1024,
+    "height": 1536,
+    "alt": "Wakasamaru cover: a ship captain at the quay railing looks up at the cargo ship Wakasamaru at sunset in Chittagong Port while dockworkers carry sacks of rice."
+  },
+  "banner": {
+    "url": "/novels/wakasamaru/banner.webp",
+    "width": 1536,
+    "height": 1024,
+    "alt": "Wakasamaru title page: a ship captain on the quay watches the cargo ship Wakasamaru at sunset in Chittagong Port, with scenes dated 18, 24, 25 and 26 March 1971."
+  },
+  "genres": [
+    "Historical"
+  ],
+  "status": "published",
+  "featured": true,
+  "chapters": [
+    {
+      "id": "wakasamaru-c01",
+      "slug": "chapter-01",
+      "title": "Chapter 1",
+      "order": 1,
+      "status": "published",
+      "pages": [
+        {
+          "id": "wakasamaru-c01-p01",
+          "order": 1,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-01.webp",
+          "width": 1536,
+          "height": 1024,
+          "alt": "18 March 1971, Chittagong Port. The Japanese cargo ship Wakasamaru arrives with rice for Bengali cyclone survivors, but dockworkers on a hartal (general strike) refuse to unload it until Captain Kazuo Ito obtains permission."
+        },
+        {
+          "id": "wakasamaru-c01-p02",
+          "order": 2,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-02.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p03",
+          "order": 3,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-03.webp",
+          "width": 1536,
+          "height": 1024,
+          "alt": "25 March 1971, Chittagong Port. Pakistani troops move weapons and supplies through the port while Captain Ito watches from the bridge; that night Operation Searchlight begins in Dhaka and fighting breaks out in Chittagong."
+        },
+        {
+          "id": "wakasamaru-c01-p04",
+          "order": 4,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-04.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p05",
+          "order": 5,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-05.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p06",
+          "order": 6,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-06.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p07",
+          "order": 7,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-07.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p08",
+          "order": 8,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-08.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p09",
+          "order": 9,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-09.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p10",
+          "order": 10,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-10.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p11",
+          "order": 11,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-11.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p12",
+          "order": 12,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-12.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p13",
+          "order": 13,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-13.webp",
+          "width": 1536,
+          "height": 1024
+        },
+        {
+          "id": "wakasamaru-c01-p14",
+          "order": 14,
+          "imageUrl": "/novels/wakasamaru/chapter-01/page-14.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    }
+  ]
+}

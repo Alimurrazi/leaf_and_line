@@ -10,9 +10,14 @@ export type ChapterContext = {
   next: ChapterLink | null;
 };
 
-function toPublishedView(book: Book): Book {
+export type RepositoryOptions = {
+  /** Keep draft and review books and chapters. Only for the local studio preview, never the public site. */
+  includeUnpublished?: boolean;
+};
+
+function toReaderView(book: Book, includeUnpublished: boolean): Book {
   const chapters = book.chapters
-    .filter((chapter) => chapter.status === "published")
+    .filter((chapter) => includeUnpublished || chapter.status === "published")
     .map((chapter) => ({
       ...chapter,
       pages: chapter.pages.map((page) => ({
@@ -27,13 +32,13 @@ function toLink(chapter: Chapter | undefined): ChapterLink | null {
   return chapter ? { slug: chapter.slug, title: chapter.title } : null;
 }
 
-export function createContentRepository(source: Book[]) {
+export function createContentRepository(source: Book[], { includeUnpublished = false }: RepositoryOptions = {}) {
   const errors = validateBooks(source);
   if (errors.length > 0) throw new Error(`Invalid content:\n- ${errors.join("\n- ")}`);
 
   const published = source
-    .filter((book) => book.status === "published")
-    .map(toPublishedView)
+    .filter((book) => includeUnpublished || book.status === "published")
+    .map((book) => toReaderView(book, includeUnpublished))
     .filter((book) => book.chapters.length > 0)
     .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 
