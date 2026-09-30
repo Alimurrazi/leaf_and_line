@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { e2eFixtureBooks } from "@/content/books/fixtures/e2e-books";
-import { wakasamaru } from "@/content/books/wakasamaru";
+import { realBooks } from "@/content/books/index.generated";
 import { createContentRepository } from "@/lib/content-repository";
 import { validateBooks } from "@/lib/content-validation";
 
@@ -9,23 +9,27 @@ afterEach(() => {
   vi.resetModules();
 });
 
+const realSlugs = realBooks.map((b) => b.slug);
+const wakasamaru = realBooks.find((b) => b.slug === "wakasamaru")!;
+
 describe("book registry", () => {
   it("excludes test fixtures from the real catalog by default", async () => {
     vi.stubEnv("LEAF_E2E_FIXTURES", "");
     vi.resetModules();
     const { allBooks } = await import("@/content/books");
-    expect(allBooks.map((b) => b.slug)).toEqual(["wakasamaru"]);
+    expect(allBooks.map((b) => b.slug)).toEqual(realSlugs);
+    expect(allBooks.some((b) => b.slug.startsWith("e2e-"))).toBe(false);
   });
 
   it("includes the fixtures when LEAF_E2E_FIXTURES=1", async () => {
     vi.stubEnv("LEAF_E2E_FIXTURES", "1");
     vi.resetModules();
     const { allBooks } = await import("@/content/books");
-    expect(allBooks.map((b) => b.slug)).toEqual(["wakasamaru", "e2e-atlas", "e2e-draft"]);
+    expect(allBooks.map((b) => b.slug)).toEqual([...realSlugs, "e2e-atlas", "e2e-draft"]);
   });
 
   it("fixtures are valid next to the real content", () => {
-    expect(validateBooks([wakasamaru, ...e2eFixtureBooks])).toEqual([]);
+    expect(validateBooks([...realBooks, ...e2eFixtureBooks])).toEqual([]);
   });
 
   it("the combined catalog behaves as a multi-book library", () => {
